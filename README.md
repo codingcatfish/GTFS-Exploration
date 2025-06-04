@@ -9,7 +9,7 @@ You can:
 - Plot vehicle routes on a map
 
 Make sure to set the file path correctly for best results.
-**GTFS** stands for **General Transit Feed Specification**, a standardized data format for public transportation. The sample data _GTFSData_ provides bus schedules in Manhattan.
+**GTFS** stands for **General Transit Feed Specification**, a standardized data format for public transportation. The [sample data](https://transitfeeds.com/p/mta/82) provides bus schedules in Manhattan.
 
 ## Contents
 - [Setting the file path](#Setting-the-file-path)
@@ -20,6 +20,9 @@ Make sure to set the file path correctly for best results.
 - [Trip Distance](#Trip-Distance)
   
 ## Usage
+### Sample Data
+Sample data for Manhattan transport can be downloaded at [https://transitfeeds.com/p/mta/82](https://transitfeeds.com/p/mta/82)
+
 ### Libraries
 Libraries used include pandas, pathlib, and math. RouteMap also requires geopandas, shapely, matplotlib, osmnx, contextily, and random.
 
