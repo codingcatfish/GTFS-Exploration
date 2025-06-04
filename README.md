@@ -14,10 +14,11 @@ Make sure to set the file path correctly for best results.
 ## Contents
 - [Setting the file path](#Setting-the-file-path)
 - [Data Info](#Data-Info)
+- [Trip Distance](#Trip-Distance)
 - [Link Trips](#Link-Trips)
 - [Bus Schedules and Statistics](#Bus-Schedules-and-Statistics)
 - [Plot Route Map](#Route-Map)
-- [Trip Distance](#Trip-Distance)
+
   
 ## Usage
 ### Sample Data
@@ -48,6 +49,17 @@ When imported, it will print out sample rows from the main GTFS files (routes, t
 import DataInfo
 ```
 
+### Trip Distance
+> [!IMPORTANT]
+> Trip Distance is required for **LinkTrips** and **BusSchedule**.
+
+A helper file that estimates the distance in _miles_ traveled each trip. 
+Two methods of distance calculation are supported:
+1. **Haversine**: Returns straight line distance that accounts for Earth's curvature
+2. **Manhattan**: Returns distance that treats longitude and latitude as a grid layout (for roads that follow a street-like layout).
+
+The Haversine method is used by default, line 43 contains the Manhattan method instead.
+
 ### Link Trips
 Combine trips, stop_times, and stops. The resulting data frame contains the headers:
 
@@ -72,7 +84,7 @@ Creates two plots to visualize GTFS data overlaying the geopandas map.
 2. Map containing routes plotted in random colors. You can choose to plot all routes in routes.txt or specify one route to plot.
 
 > [!WARNING]
-> **Redefine _city_** to the GTFS data location so the correct city is shown.
+> **Redefine _city_** to the correct GTFS data location.
 
 ```
 city = "Manhattan"
@@ -93,11 +105,3 @@ for route, item in gdf_shapes:
 #### Sample plot of Manhattan Transit System
 
 <img src="https://github.com/user-attachments/assets/c13d672f-c4d5-456e-8959-d7a2467392ea" alt = "Sample output of RouteMap, showing a map of the city of Manhattan with randomly colored routes overlaying it." width=50% height=50%>
-
-### Trip Distance
-A helper file that estimates the distance in _miles_ traveled each trip.
-Two methods of distance calculation are supported:
-1. **Haversine**: Returns straight line distance that accounts for Earth's curvature
-2. **Manhattan**: Returns distance that treats longitude and latitude as a grid layout (for roads that follow a street-like layout).
-
-The Haversine method is used by default, line 43 contains the Manhattan method instead.
