@@ -1,6 +1,6 @@
 #Builds a basic schedule showing which trips stop where and when.
 import pandas as pd
-import MS3TripDistance as distCalc
+import TripDistance as distCalc
 from pathlib import Path
 
 pd.set_option('display.width',1000)
@@ -8,12 +8,12 @@ pd.set_option('display.max_columns',100)
 
 data_path = Path.cwd() / "GTFSData"
 
-def read_data(file_path):
+def read(file_path):
     return pd.read_csv(data_path / file_path)
 
-schedule = read_data("trips.txt")[["trip_id","route_id", "shape_id"]]
-stop_times = read_data("stop_times.txt")[["trip_id","stop_sequence","stop_id","arrival_time","departure_time"]]
-stops = read_data("stops.txt")[["stop_id","stop_name"]]
+schedule = read("trips.txt")[["trip_id","route_id", "shape_id"]]
+stop_times = read("stop_times.txt")[["trip_id","stop_sequence","stop_id","arrival_time","departure_time"]]
+stops = read("stops.txt")[["stop_id","stop_name"]]
 
 stop_times = stop_times.merge(stops, how = "left", on = "stop_id")
 stop_times = stop_times.drop(columns = "stop_id")
