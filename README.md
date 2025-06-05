@@ -13,11 +13,11 @@ Make sure to set the file path correctly for best results.
 
 ## Contents
 - [Setting the file path](#Setting-the-file-path)
-- [Data Info](#Data-Info)
+- [Data Introduction](#Data-Info)
 - [Trip Distance](#Trip-Distance)
-- [Link Trips](#Link-Trips)
+- [Link Trips into a Schedule](#Link-Trips-into-a-Schedule)
 - [Bus Schedules and Statistics](#Bus-Schedules-and-Statistics)
-- [Plot Route Map](#Route-Map)
+- [Plot Routes on a Map](#Plot-Routes-on-a-Map)
 
   
 ## Usage
@@ -32,14 +32,14 @@ Libraries used include pandas, pathlib, and math. RouteMap also requires geopand
 > To ensure the correct files are being read, **redefine _data_path_** to the location of the folder that contains your GTFS files. You will need to do this in every script.
 
 Path.cwd() refers to the current working directory, which is the file location of the script.
-For example, if you have a folder that contains both your GTFS data in "ReadableData" and the script, you should redefine data_path to the following:
+For example, if you have a folder that contains both your GTFS data in "DataFolder" and the script, you should redefine data_path to the following:
 ```
-data_path = Path.cwd() / "ReadableData"
+data_path = Path.cwd() / "DataFolder"
 ```
 
 Or you can use an absolute path, starting from the root directory and working your way to the data file:
 ```
-data_path = "/home/downloads/ReadableData/schedules.txt"
+data_path = "/home/downloads/DataFolder/schedules.txt"
 ```
 
 ### Data Info
@@ -58,9 +58,9 @@ Two methods of distance calculation are supported:
 1. **Haversine**: Returns straight line distance that accounts for Earth's curvature
 2. **Manhattan**: Returns distance that treats longitude and latitude as a grid layout (for roads that follow a street-like layout).
 
-The Haversine method is used by default, line 43 contains the Manhattan method instead.
+The Haversine method is used by default, while line 43 contains the Manhattan method instead.
 
-### Link Trips
+### Link Trips into a Schedule
 Combine trips, stop_times, and stops. The resulting data frame contains the headers:
 
     trip_id | route_id | stop_sequence | stop_name | arrival_time | departure_time | Trip distance (in miles)
@@ -68,7 +68,7 @@ Combine trips, stop_times, and stops. The resulting data frame contains the head
 Data can be saved to a csv by uncommenting the last line.
 
 ### Bus Schedules and Statistics
-1. **bus_schedule:** Builds a basic schedule showing schedules for each vehicle (unique block_id). The resulting data frame is grouped by block_id and contains:
+1. **bus_schedule:** Builds a basic schedule showing schedules for each vehicle (unique block_id). The resulting data frame is grouped by block_id with the header:
 
         trip_id | departure_time | arrival_time | Trip distance (in miles)
 
@@ -76,9 +76,13 @@ Data can be saved to a csv by uncommenting the last line.
 
         block_id | miles traveled | travel time | total stops
 
- Data can be saved to csv by uncommenting the last lines.  
+3. **Plots histograms** of miles traveled and travel time each day. A sample output is shown below:
+<img src="https://github.com/user-attachments/assets/a5937301-5e9f-4476-bf6f-b02c0e4c101a" alt = "Sample output of BusSchedule, two histograms side by side showing the distirbution of miles traveled and travel time per day, respectively." width=80% height=50%>
 
-### Plot Route Map
+
+ Data can also be saved to csv by uncommenting the last two lines.  
+
+### Plot Routes on a Map
 Creates two plots to visualize GTFS data overlaying the geopandas map.
 1. Dot plot of stops in stops.txt
 2. Map containing routes plotted in random colors. You can choose to plot all routes in routes.txt or specify one route to plot.
@@ -87,7 +91,7 @@ Creates two plots to visualize GTFS data overlaying the geopandas map.
 > **Redefine _city_** to the correct GTFS data location.
 
 ```
-city = "Manhattan"
+city = "Manhattan"    # Line 24
 ```
 
 **Plotting one route**
@@ -104,4 +108,4 @@ for route, item in gdf_shapes:
 
 #### Sample plot of Manhattan Transit System
 
-<img src="https://github.com/user-attachments/assets/c13d672f-c4d5-456e-8959-d7a2467392ea" alt = "Sample output of RouteMap, showing a map of the city of Manhattan with randomly colored routes overlaying it." width=50% height=50%>
+<img src="https://github.com/user-attachments/assets/c13d672f-c4d5-456e-8959-d7a2467392ea" alt = "Sample output of RouteMap, showing a map of the city of Manhattan with randomly colored routes overlaying it." width=65% height=80%>
