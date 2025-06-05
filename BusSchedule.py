@@ -1,6 +1,4 @@
-# Builds a basic schedule showing which trips stop where and when.
-# Also calculates bus statistics such as total distance traveled in a day, time spent traveling, and total stops.
-# Saveable to a CSV and histograms.
+#Builds a basic schedule showing which trips stop where and when.
 import pandas as pd
 import matplotlib.pyplot as plt
 import TripDistance as distCalc
@@ -44,7 +42,7 @@ schedule = schedule.groupby("block_id", sort = False)
 bus_distances = schedule["Trip distance (in miles)"].sum().reset_index()
 
 bus_times = schedule.agg(first_arrival = ("arrival_time","min"), last_departure = ("departure_time", "max"))
-bus_times["Travel time (in hours)"] = (bus_times["last_departure"] - bus_times["first_arrival"])
+bus_times["Travel time (in hours)"] = (bus_times["last_departure"] - bus_times["first_arrival"]).dt.total_seconds()/3600
 bus_times = bus_times.reset_index()
 
 def numStops(group):
@@ -64,17 +62,17 @@ print(bus_info)
 plt.subplot(1,2,1)
 c, b, bars = plt.hist(bus_info["Trip distance (in miles)"], bins = 20)
 plt.bar_label(bars)
-plt.xlabel("Trip distance (in miles)", fontsize = 15)
-plt.ylabel("Number of buses", fontsize = 15)
-plt.title("Distribution of Trip Distances (Miles)", fontsize = 20)
+plt.xlabel("Trip distance (in miles)", fontsize = 20)
+plt.ylabel("Number of buses", fontsize = 20)
+plt.title("Distribution of Trip Distances (Miles)", fontsize = 30)
 
 # Travel time histogram
 plt.subplot(1,2,2)
-c, b, bars = plt.hist(bus_times["Travel time (in hours)"].dt.total_seconds()/3600, bins = 20)
+c, b, bars = plt.hist(bus_times["Travel time (in hours)"], bins = 20)
 plt.bar_label(bars)
-plt.xlabel("Travel time (in hours)", fontsize = 15)
-plt.ylabel("Number of buses", fontsize = 15)
-plt.title("Distribution of Travel Lengths (Hours)", fontsize = 20)
+plt.xlabel("Travel time (in hours)", fontsize = 20)
+plt.ylabel("Number of buses", fontsize = 20)
+plt.title("Distribution of Travel Lengths (Hours)", fontsize = 30)
 plt.show()
 
 
