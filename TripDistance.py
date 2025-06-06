@@ -1,5 +1,5 @@
-#Estimates the distance traveled in each trip.
-#Supports two methods of distance calculation:
+# Estimates the distance traveled in each trip.
+# Supports two methods of distance calculation:
 # Haversine: Returns straight line distance that accounts for Earth's curvature
 # Manhattan: Returns distance that treats longitude and latitude as a grid layout.
 
@@ -10,7 +10,8 @@ data_path = Path.cwd() / "GTFSData"
 def read_data(file_path):
     return pd.read_csv(data_path / file_path)
 
-haversine_mode = True
+# === Change this! ===
+haversine_mode = True   # False: uses MANHATTAN calculation
 
 def haversine(lat1, lat2, lon1, lon2):
     # convert decimal degrees to radians 
@@ -40,10 +41,10 @@ def distance_traveled(file_path):
             frame2 = frame.sort_values(by=["shape_pt_sequence"])
             dist = 0
             for i in range(frame2.first_valid_index(), frame2.last_valid_index()): #distance calculation
-                #Total shape distance
-                if haversine_mode: #HAVERSINE
+                # Total shape distance
+                if haversine_mode:
                      dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i+1], frame2["shape_pt_lon"][i], frame2["shape_pt_lon"][i+1])
-                else: #MANHATTAN
+                else: # Manhattan
                     dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i]) + haversine(frame2["shape_pt_lat"][i+1], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i+1])
             result = pd.concat([result, pd.DataFrame([[shape,dist]],columns = result.columns)])
         return result
