@@ -10,6 +10,8 @@ data_path = Path.cwd() / "GTFSData"
 def read_data(file_path):
     return pd.read_csv(data_path / file_path)
 
+haversine_mode = True
+
 def haversine(lat1, lat2, lon1, lon2):
     # convert decimal degrees to radians 
     lat1 *= pi/180
@@ -39,9 +41,9 @@ def distance_traveled(file_path):
             dist = 0
             for i in range(frame2.first_valid_index(), frame2.last_valid_index()): #distance calculation
                 #Total shape distance
-                #MANHATTAN
-                #dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i]) + haversine(frame2["shape_pt_lat"][i+1], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i+1])
-                #HAVERSINE
-                dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i+1], frame2["shape_pt_lon"][i], frame2["shape_pt_lon"][i+1])
+                if haversine_mode: #HAVERSINE
+                     dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i+1], frame2["shape_pt_lon"][i], frame2["shape_pt_lon"][i+1])
+                else: #MANHATTAN
+                    dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i]) + haversine(frame2["shape_pt_lat"][i+1], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i+1])
             result = pd.concat([result, pd.DataFrame([[shape,dist]],columns = result.columns)])
         return result
