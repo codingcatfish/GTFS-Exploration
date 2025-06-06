@@ -41,7 +41,7 @@ def distance_traveled(file_path):
             dist = 0
             for i in range(frame2.first_valid_index(), frame2.last_valid_index()): #distance calculation
                 #Total shape distance
-                if haversineMode: #HAVERSINE
+                if haversine_mode: #HAVERSINE
                      dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i+1], frame2["shape_pt_lon"][i], frame2["shape_pt_lon"][i+1])
                 else: #MANHATTAN
                     dist +=haversine(frame2["shape_pt_lat"][i], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i]) + haversine(frame2["shape_pt_lat"][i+1], frame2["shape_pt_lat"][i], frame2["shape_pt_lon"][i+1], frame2["shape_pt_lon"][i+1])
