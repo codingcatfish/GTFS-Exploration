@@ -83,32 +83,35 @@ The output can be saved to a CSV in Line 11 by setting **save_combined_data** to
 
         trip_id | departure_time | arrival_time | Trip distance (in miles)
 
-A sample output for the Manhattan Transit system is shown below. 
-- **block_id** refers to the unique vehicle this schedule references.
-- **trip_id** shows the different trips this vehicle takes in one day. They are ordered by arrival_time.
-- **arrival_time** and **departure_time** of each trip is shown.
-- **trip distances** in miles are also shown.
-```
-# Sample schedule for vehicle 34545487
-      block_id                      trip_id  departure_time    arrival_time  Trip distance (in miles)
-5504  34545487  OF_H4-Weekday-003000_M7_201 0 days 01:11:00 0 days 00:30:00                  7.633725
-5615  34545487  OF_H4-Weekday-010500_M7_201 0 days 02:25:00 0 days 01:45:00                  8.104641
-5506  34545487  OF_H4-Weekday-016000_M7_201 0 days 03:19:00 0 days 02:40:00                  7.633725
-5617  34545487  OF_H4-Weekday-022500_M7_201 0 days 04:23:00 0 days 03:45:00                  8.104641
-5510  34545487  OF_H4-Weekday-031900_M7_201 0 days 06:03:00 0 days 05:19:00                  7.633725
-5621  34545487  OF_H4-Weekday-038300_M7_201 0 days 07:25:00 0 days 06:23:00                  8.104641
-```
+    A sample output for the Manhattan Transit system is shown below. 
+    - **block_id** refers to the unique vehicle this schedule references.
+    - **trip_id** shows the different trips this vehicle takes in one day. They are ordered by arrival_time.
+    - **arrival_time** and **departure_time** of each trip is shown.
+    - **trip distances** in miles are also shown.
+      
+    ```
+    # Sample schedule for vehicle 34545487
+          block_id                      trip_id  departure_time    arrival_time  Trip distance (in miles)
+    5504  34545487  OF_H4-Weekday-003000_M7_201 0 days 01:11:00 0 days 00:30:00                  7.633725
+    5615  34545487  OF_H4-Weekday-010500_M7_201 0 days 02:25:00 0 days 01:45:00                  8.104641
+    5506  34545487  OF_H4-Weekday-016000_M7_201 0 days 03:19:00 0 days 02:40:00                  7.633725
+    5617  34545487  OF_H4-Weekday-022500_M7_201 0 days 04:23:00 0 days 03:45:00                  8.104641
+    5510  34545487  OF_H4-Weekday-031900_M7_201 0 days 06:03:00 0 days 05:19:00                  7.633725
+    5621  34545487  OF_H4-Weekday-038300_M7_201 0 days 07:25:00 0 days 06:23:00                  8.104641
+    ```
 
-3. **bus_info:** Creates a dataframe containing important **daily** statistics for each vehicle, including **travel distance**, **time**, and **number of stops**. The table header contains:
+2. **bus_info:** Creates a dataframe containing important **daily** statistics for each vehicle, including **travel distance**, **time**, and **number of stops**. The table header contains:
 
         block_id | miles traveled | travel time | total stops
-```
-# Sample Daily Statistics output
-      block_id  Trip distance (in miles)  Travel time (in hours)  total stops
-0     34545487                 47.215099                6.916667          360
-1     34545488                 47.215099                7.383333          360
-2     34545489                 78.691832               16.050000          600
-```
+
+   A sample output is shown below:
+    ```
+    # Sample Daily Statistics output
+          block_id  Trip distance (in miles)  Travel time (in hours)  total stops
+    0     34545487                 47.215099                6.916667          360
+    1     34545488                 47.215099                7.383333          360
+    2     34545489                 78.691832               16.050000          600
+    ```
    
 
 Both outputs can be saved to CSV by setting **save_bus_schedule** and **save_bus_stats** to True for bus_schedule and bus_info, respectively.
