@@ -13,6 +13,7 @@ Make sure to set the file path correctly for best results.
 
 ## Contents
 - [Setting the file path](#Setting-the-file-path)
+- [Saving to CSV](#Saving-to-CSV)
 - [Data Introduction](#Data-Info)
 - [Trip Distance](#Trip-Distance)
 - [Link Trips into a Schedule](#Link-Trips-into-a-Schedule)
@@ -34,6 +35,7 @@ Libraries used include pandas, pathlib, and math. RouteMap also requires geopand
 Path.cwd() refers to the current working directory, which is the file location of the script.
 For example, if you have a folder that contains both your GTFS data in "DataFolder" and the script, you should redefine data_path to the following:
 ```
+# === Change these! ===
 data_path = Path.cwd() / "DataFolder"
 ```
 
@@ -42,12 +44,22 @@ Or you can use an absolute path, starting from the root directory and working yo
 data_path = "/home/downloads/DataFolder/schedules.txt"
 ```
 
+### Saving to CSV
+> [!IMPORTANT]
+> Script outputs can be saved to CSV by **setting the save boolean to True.**
+> This option exists for **LinkTrips** and **BusSchedule.** 
+
+An example can be found in LinkTrips, line 9:
+```
+# === Change these! ===
+data_path = Path.cwd() / "GTFSData"
+save_combined_data = False  # Setting this to True will save the combined schedules to a CSV file.
+```
+
+## Files
 ### Data Info
 Provides a preview of the GTFS data.
 When imported, it will print out sample rows from the main GTFS files (routes, trips, stops, stop_times, shapes) and explain what each column contains.
-```
-import DataInfo
-```
 
 ### Trip Distance
 > [!IMPORTANT]
@@ -58,14 +70,14 @@ Two methods of distance calculation are supported:
 1. **Haversine**: Returns straight line distance that accounts for Earth's curvature
 2. **Manhattan**: Returns distance that treats longitude and latitude as a grid layout (for roads that follow a street-like layout).
 
-The Haversine method is used by default, while line 43 contains the Manhattan method instead.
+The Haversine method is used by default. This can be toggled in line 14 by setting **haversine_mode** to False.
 
 ### Link Trips into a Schedule
 Combine trips, stop_times, and stops. The resulting data frame contains the headers:
 
     trip_id | route_id | stop_sequence | stop_name | arrival_time | departure_time | Trip distance (in miles)
 
-Data can be saved to a csv by uncommenting the last line.
+The output can be saved to a CSV in Line 11 by setting **save_combined_data** to True.
 
 ### Bus Schedules and Statistics
 1. **bus_schedule:** Builds a basic schedule showing schedules for each vehicle (unique block_id). The resulting data frame is grouped by block_id with the header:
@@ -76,9 +88,9 @@ Data can be saved to a csv by uncommenting the last line.
 
         block_id | miles traveled | travel time | total stops
 
-3. **Plots histograms** of miles traveled and travel time each day. A sample output is shown below:
-<img src="https://github.com/user-attachments/assets/a5937301-5e9f-4476-bf6f-b02c0e4c101a" alt = "Sample output of BusSchedule, two histograms side by side showing the distirbution of miles traveled and travel time per day, respectively." width=80% height=50%>
-
+3. **Plots histograms** of miles traveled and travel time each day. Sample outputs are shown below:
+<img src="https://github.com/user-attachments/assets/27b80b89-92b7-4c2e-972a-7d86b2945f11" alt = "First sample output of BusSchedule, a histogram showing the buses' distribution of daily travel length (hours)." width=80% height=50%>
+<img src="https://github.com/user-attachments/assets/e8f2a764-2e60-4d29-96aa-bdd8efa66110" alt = "First sample output of BusSchedule, a histogram showing the buses' distribution of daily distance travelled (miles)" width=80% height=50%>
 
  Data can also be saved to csv by uncommenting the last two lines.  
 
