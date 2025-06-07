@@ -1,7 +1,7 @@
 #Builds a basic schedule showing which trips stop where and when.
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
+import seaborn as sns
 import TripDistance as distCalc
 from pathlib import Path
 
@@ -36,7 +36,7 @@ schedule = schedule.drop(columns="shape_id")
 
 schedule = schedule.sort_values(by=["block_id", "arrival_time"])
 
-# Bus statistics
+# Calculate bus statistics
 schedule["arrival_time"] = pd.to_timedelta(schedule["arrival_time"])
 schedule["departure_time"] = pd.to_timedelta(schedule["departure_time"])
 
@@ -47,13 +47,13 @@ bus_times = schedule.agg(first_arrival = ("arrival_time","min"), last_departure 
 bus_times["Travel time (in hours)"] = (bus_times["last_departure"] - bus_times["first_arrival"]).dt.total_seconds()/3600
 bus_times = bus_times.reset_index()
 
-def numStops(group): # Daily stops per bus
+def num_Stops(group): # Daily stops per bus
     sum = 0
     for trip_id in group:
         sum+= len(stop_times.get_group(trip_id))
     return sum
 
-bus_stops = schedule["trip_id"].apply(numStops).reset_index()
+bus_stops = schedule["trip_id"].apply(num_Stops).reset_index()
 bus_stops.rename(columns = {"trip_id":"total stops"}, inplace = True)
 
 bus_info = bus_distances.merge(bus_times[["Travel time (in hours)","block_id"]], on = "block_id").merge(bus_stops, on = "block_id")
@@ -61,9 +61,9 @@ bus_info = bus_distances.merge(bus_times[["Travel time (in hours)","block_id"]],
 # Displaying tables
 print("=== Sample Bus Schedules ===") # Shows first 3 buses
 count = 0
-for key, item in schedule:
+for key, group in schedule:
     count+=1
-    print(schedule.get_group(key),"\n\n")
+    print(group,"\n\n")
     if count>2:
         break
 
@@ -73,22 +73,20 @@ print(bus_info)
 
 # Trip distance histogram
 num_bins = (int)(num_buses**.5)
-f, ax = plt.subplots(1,1,figsize=(15,15))
-c, b, bars = plt.hist(bus_info["Trip distance (in miles)"], bins = num_bins)
-plt.bar_label(bars)
-plt.tick_params(axis = "both", labelsize = 20)
-plt.xlabel("Trip distance (in miles)", fontsize = 40)
-plt.ylabel("Number of buses", fontsize = 3400)
-plt.title("Distribution of Trip Distances (Miles)", fontsize = 50)
+f, ax = plt.subplots(1,1,figsize=(14,9))
+sns.histplot(bus_info["Trip distance (in miles)"], bins = num_bins, color = "#009391")
+plt.tick_params(axis = "both", labelsize = 15)
+plt.xlabel("Trip distance (in miles)", fontsize = 30)
+plt.ylabel("Number of buses", fontsize = 30)
+plt.title("Distribution of Trip Distances (Miles)", fontsize = 40)
 
 # Travel time histogram
-f, ax = plt.subplots(1,1,figsize=(15,15))
-c, b, bars = plt.hist(bus_times["Travel time (in hours)"], bins = num_bins)
-plt.bar_label(bars)
-plt.tick_params(axis = "both", labelsize = 20)
-plt.xlabel("Travel time (in hours)", fontsize = 40)
-plt.ylabel("Number of buses", fontsize = 40)
-plt.title("Distribution of Travel Lengths (Hours)", fontsize = 50)
+f, ax = plt.subplots(1,1,figsize=(14,9))
+sns.histplot(bus_times["Travel time (in hours)"], bins = num_bins, color = "#009391")
+plt.tick_params(axis = "both", labelsize = 15)
+plt.xlabel("Travel time (in hours)", fontsize = 30)
+plt.ylabel("Number of buses", fontsize = 30)
+plt.title("Distribution of Travel Lengths (Hours)", fontsize = 40)
 plt.show()
 
 # Saving to CSV

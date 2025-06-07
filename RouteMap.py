@@ -8,20 +8,21 @@ import osmnx as ox
 import contextily as ctx
 from random import randint
 
+# === Change these! ===
 data_path = Path.cwd() / "GTFSData"
-hexstrings = "1234567890ABCDEF"
+city = "Manhattan"  # Set to the location you're visualizing
+one_route = ""      # If plotting ONE route, set to name of that route
 
 def read(file_path):
     return pd.read_csv(data_path / file_path)
 
+hexstrings = "1234567890ABCDEF"
 def randColor():
     str = "#"
     for i in range(6):
         str+=hexstrings[randint(0,15)]
     return str
 
-#Set city to the location you're visualizing
-city = "Manhattan"
 
 #Plot 1, dot map
 df_stops = read("stops.txt")
@@ -63,17 +64,15 @@ gdf_shapes = gdf_shapes.groupby(by = "route_id")
 f, ax = plt.subplots(1,1,figsize=(12,12))
 
 cax = admin.plot(ax=ax, edgecolor = 'k', color = 'none')
-cax = admin.plot(ax=ax, edgecolor = 'k', alpha = 0.2)
+cax = admin.plot(ax=ax, edgecolor = 'k', alpha = 0.1)
 
-#Plot a single route
-gdf_shapes.get_group("M3").plot(ax=ax, color = '#16417C', alpha = 0.9, linewidth = 1) 
-
-#Plot all routes
-for route, item in gdf_shapes:
-    gdf_shapes.get_group(route).plot(ax=ax, color = randColor(), alpha = 0.9, linewidth = 1)    
+if len(one_route) > 0: #Plot a single route
+    gdf_shapes.get_group(one_route).plot(ax=ax, color = "#2F2FB7", alpha = 0.9, linewidth = 1) 
+else: #Plot all routes
+    for route, item in gdf_shapes:
+        gdf_shapes.get_group(route).plot(ax=ax, color = randColor(), alpha = 0.9, linewidth = 1)    
 
 ax.axis('off')
 ctx.add_basemap(ax, alpha = 0.8, crs = 4326, url = ctx.providers.CartoDB.DarkMatterNoLabels)
 plt.tight_layout()
 plt.show()
-

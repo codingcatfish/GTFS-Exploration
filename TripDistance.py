@@ -5,7 +5,7 @@
 
 import pandas as pd
 from pathlib import Path
-from math import  cos, sin, asin, sqrt, pi, atan2
+from math import  cos, sin, asin, sqrt, pi
 data_path = Path.cwd() / "GTFSData"
 def read_data(file_path):
     return pd.read_csv(data_path / file_path)
