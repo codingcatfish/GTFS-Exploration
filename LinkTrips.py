@@ -6,7 +6,9 @@ from pathlib import Path
 pd.set_option('display.width',1000)
 pd.set_option('display.max_columns',100)
 
+# === Change these! ===
 data_path = Path.cwd() / "GTFSData"
+save_combined_data = False
 
 def read(file_path):
     return pd.read_csv(data_path / file_path)
@@ -26,6 +28,8 @@ schedule = schedule.sort_values(by=["departure_time"])
 distances = distCalc.distance_traveled("shapes.txt")
 schedule = schedule.merge(distances, how = "left", on = "shape_id")
 schedule = schedule.drop(columns = "shape_id")
+
 print(schedule)
 
-#schedule.to_csv(data_path / "combined.txt")
+if save_combined_data:
+    schedule.to_csv(data_path / "combined.txt")
